@@ -79,12 +79,24 @@
     //
     // test if a specific row on this board contains a conflict
     hasRowConflictAt: function(rowIndex) {
-      return false; // fixme
+      var checkRow = this.rows()[rowIndex];
+      var pieceCount = 0;
+      for( var i = 0; i < checkRow.length; i++ ){
+        if( checkRow[i] ){
+          pieceCount++;
+        }
+      }
+      return pieceCount > 1 ? true : false;
     },
 
     // test if any rows on this board contain conflicts
     hasAnyRowConflicts: function() {
-      return false; // fixme
+      var boardMatrix = this.rows();
+      var hasConflict = false;
+      for( var i = 0; i < boardMatrix.length; i++ ){
+        hasConflict = hasConflict || this.hasRowConflictAt(i);
+      }
+      return hasConflict;
     },
 
 
@@ -94,12 +106,24 @@
     //
     // test if a specific column on this board contains a conflict
     hasColConflictAt: function(colIndex) {
-      return false; // fixme
+      var boardMatrix = this.rows();
+      var pieceCount = 0;
+      for ( var i = 0; i < boardMatrix.length; i++ ){
+        if ( boardMatrix[i][colIndex] ) {
+          pieceCount++;
+        }
+      }
+      return pieceCount > 1 ? true : false;
     },
 
     // test if any columns on this board contain conflicts
     hasAnyColConflicts: function() {
-      return false; // fixme
+      var boardMatrix = this.rows();
+      var hasConflict = false;
+      for( var i = 0; i < boardMatrix.length; i++ ){
+        hasConflict = hasConflict || this.hasColConflictAt(i);
+      }
+      return hasConflict;
     },
 
 
@@ -109,12 +133,39 @@
     //
     // test if a specific major diagonal on this board contains a conflict
     hasMajorDiagonalConflictAt: function(majorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      // Start at [0][input]
+      var boardMatrix = this.rows();
+      var rowIndex = 0;
+      var colIndex = majorDiagonalColumnIndexAtFirstRow;
+      var pieceCount = 0;
+      // Check to see if position is in bounds or out of bounds with negative col index
+      while ( this._isInBounds(rowIndex, colIndex) || colIndex < 0 ){
+        // Check to see if in bounds
+        if ( this._isInBounds(rowIndex, colIndex) ){
+          // Check to see if there is a piece
+          if ( boardMatrix[rowIndex][colIndex] ){
+            // Add to piece count
+            pieceCount++;
+          }
+        }
+        rowIndex++;
+        colIndex++;
+      }
+      // return piece count
+      return pieceCount > 1 ? true : false;
     },
 
     // test if any major diagonals on this board contain conflicts
     hasAnyMajorDiagonalConflicts: function() {
-      return false; // fixme
+      var boardMatrix = this.rows();
+      var hasConflict = false;
+      var startLoopIndex = -this.attributes.n - 2;
+      var endLoopIndex = this.attributes.n - 2;
+
+      for( var i = startLoopIndex; i <= endLoopIndex; i++ ){
+        hasConflict = hasConflict || this.hasMajorDiagonalConflictAt(i);
+      }
+      return hasConflict;
     },
 
 
@@ -124,12 +175,38 @@
     //
     // test if a specific minor diagonal on this board contains a conflict
     hasMinorDiagonalConflictAt: function(minorDiagonalColumnIndexAtFirstRow) {
-      return false; // fixme
+      // Start at [0][input]
+      var boardMatrix = this.rows();
+      var rowIndex = 0;
+      var colIndex = minorDiagonalColumnIndexAtFirstRow;
+      var pieceCount = 0;
+      // Check to see if position is in bounds or out of bounds with col index > n
+      while ( this._isInBounds(rowIndex, colIndex) || colIndex > this.attributes.n ){
+        // Check to see if in bounds
+        if ( this._isInBounds(rowIndex, colIndex) ){
+          // Check to see if there is a piece
+          if ( boardMatrix[rowIndex][colIndex] ){
+            // Add to piece count
+            pieceCount++;
+          }
+        }
+        rowIndex++;
+        colIndex--;
+      }
+      // return piece count
+      return pieceCount > 1 ? true : false;
     },
 
     // test if any minor diagonals on this board contain conflicts
     hasAnyMinorDiagonalConflicts: function() {
-      return false; // fixme
+      var boardMatrix = this.rows();
+      var hasConflict = false;
+      var n = this.attributes.n * 2
+
+      for( var i = 1; i <= n; i++ ){
+        hasConflict = hasConflict || this.hasMinorDiagonalConflictAt(i);
+      }
+      return hasConflict;
     }
 
     /*--------------------  End of Helper Functions  ---------------------*/
