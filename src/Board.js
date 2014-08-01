@@ -181,7 +181,7 @@
       var colIndex = minorDiagonalColumnIndexAtFirstRow;
       var pieceCount = 0;
       // Check to see if position is in bounds or out of bounds with col index > n
-      while ( this._isInBounds(rowIndex, colIndex) || colIndex > this.attributes.n ){
+      while ( this._isInBounds(rowIndex, colIndex) || colIndex >= this.attributes.n ){
         // Check to see if in bounds
         if ( this._isInBounds(rowIndex, colIndex) ){
           // Check to see if there is a piece
